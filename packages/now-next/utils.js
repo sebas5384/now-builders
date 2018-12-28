@@ -124,58 +124,12 @@ function onlyStaticDirectory(files) {
   return excludeFiles(files, matcher);
 }
 
-/**
- * Enforce specific package.json configuration for smallest possible lambda
- * @param {{dependencies?: any, devDependencies?: any, scripts?: any}} defaultPackageJson
- */
-function normalizePackageJson(defaultPackageJson = {}) {
-  const dependencies = {};
-  const devDependencies = {
-    ...defaultPackageJson.dependencies,
-    ...defaultPackageJson.devDependencies,
-  };
-
-  if (devDependencies.react) {
-    dependencies.react = devDependencies.react;
-    delete devDependencies.react;
-  }
-
-  if (devDependencies['react-dom']) {
-    dependencies['react-dom'] = devDependencies['react-dom'];
-    delete devDependencies['react-dom'];
-  }
-
-  return {
-    ...defaultPackageJson,
-    dependencies: {
-      // react and react-dom can be overwritten
-      react: 'latest',
-      'react-dom': 'latest',
-      ...dependencies, // override react if user provided it
-      // next-server is forced to canary
-      'next-server': 'v7.0.2-canary.49',
-    },
-    devDependencies: {
-      ...devDependencies,
-      // next is forced to canary
-      next: 'v7.0.2-canary.49',
-      // next-server is a dependency here
-      'next-server': undefined,
-    },
-    scripts: {
-      ...defaultPackageJson.scripts,
-      'now-build': 'NODE_OPTIONS=--max_old_space_size=3000 next build --lambdas',
-    },
-  };
-}
-
 module.exports = {
   excludeFiles,
   validateEntrypoint,
   includeOnlyEntryDirectory,
   moveEntryDirectoryToRoot,
   excludeLockFiles,
-  normalizePackageJson,
   excludeStaticDirectory,
   onlyStaticDirectory,
 };
