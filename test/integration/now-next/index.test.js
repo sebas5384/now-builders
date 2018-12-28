@@ -32,16 +32,6 @@ it(
   FOUR_MINUTES,
 );
 
-it('Should throw when package.json or next.config.js is not the "src"', async () => {
-  try {
-    await runBuildLambda(
-      path.join(__dirname, 'no-package-json-and-next-config'),
-    );
-  } catch (err) {
-    expect(err.message).toMatch(/package\.json/);
-  }
-});
-
 it(
   'Should build the static-files test',
   async () => {

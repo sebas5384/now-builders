@@ -4,7 +4,6 @@
   },
   "dependencies": {
     "next": "canary",
-    "isomorphic-unfetch": "latest",
     "react": "latest",
     "react-dom": "latest"
   }
